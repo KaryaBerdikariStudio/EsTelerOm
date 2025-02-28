@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bonjour": "^3.5.0",
+    "cors": "^2.8.5",
+    "dgram": "^1.0.1",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7"
+  }
+}

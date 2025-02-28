@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Backend Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+    }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Backend Server</h1>
+  <p>The server is running on <strong>esp-server.local:8000</strong></p>
+
+  <h2>RFID Card Table</h2>
+  <table id="rfid-table">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>Huruf</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <h2>Input Log Table</h2>
+  <table id="input-log-table">
+    <thead>
+      <tr>
+        <th>UID</th>
+        <th>IP Address</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function fetchTableData(url, tableId) {
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const tableBody = document.querySelector(`#${tableId} tbody`);
+        tableBody.innerHTML = "";
+
+        if (tableId === "rfid-table") {
+          data.rfid_cards.forEach(row => {
+            tableBody.innerHTML += `<tr><td>${row.uid}</td><td>${row.huruf}</td></tr>`;
+          });
+        } else if (tableId === "input-log-table") {
+          data.input_log.forEach(row => {
+            // Convert ISO timestamp to local string format
+            const formattedTimestamp = new Date(row.timestamp).toLocaleString();
+            tableBody.innerHTML += `<tr><td>${row.uid}</td><td>${row.ip_address}</td><td>${formattedTimestamp}</td></tr>`;
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+  }
+
+    function refreshTables() {
+      fetchTableData("/rfid-cards", "rfid-table");
+      fetchTableData("/input-log", "input-log-table");
+    }
+
+    refreshTables();
+    setInterval(refreshTables); // Refresh data every 5 seconds
+
+
+  </script>
+</body>
+</html>

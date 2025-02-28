@@ -23,7 +23,7 @@ public class MyNetworkManager : NetworkManager
         Debug.Log("🚀 Starting Node.js Server...");
         try
         {
-            System.Diagnostics.Process.Start("node", "server.js");
+            System.Diagnostics.Process.Start("node", "WebServerDB/server.js");
         }
         catch (System.Exception ex)
         {
