@@ -1,9 +1,9 @@
+using System.Collections; // For Android file loading
 using System.Collections.Generic;
+using System.IO; // For file reading
 using System.Linq;
 using UnityEngine;
-using System.IO; // For file reading
 using UnityEngine.Networking;
-using System.Collections; // For Android file loading
 
 [System.Serializable]
 public class WordData
@@ -22,11 +22,12 @@ public class AssetManager : MonoBehaviour
     public static AssetManager instance { get; private set; }
 
 
-    
+
 
 
     [SerializeField]
-    private List<WordData> _wordList = new List<WordData>();
+    public List<WordData> _wordList = new List<WordData>();
+    public List<string> listKata = new List<string>();
 
     [SerializeField]
     public int GetMaxIDValue() => _wordList.Count > 0 ? _wordList.Max(word => word.id) : 0; // Jumlah ID
@@ -40,21 +41,21 @@ public class AssetManager : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-        
+
 
         // Load method buat ListKata.csv disini juga dia ngitung jumlah si ID di ListKata.csv yang ready asetnya
-        StartCoroutine(LoadWordListFromCSV("Campalagiang")) ; // Jangan lupa ganti ini kalau gamenya beda bahasa
+        StartCoroutine(LoadWordListFromCSV("Campalagiang")); // Jangan lupa ganti ini kalau gamenya beda bahasa
     }
 
-   public string CariKataBahasaDaerahBerdasarID(int id)
+    public string CariKataBahasaDaerahBerdasarID(int id)
     {
         WordData word = _wordList.FirstOrDefault(w => w.id == id);
         return word != null ? word.bahasaDaerah : string.Empty;
     }
 
-    public string CariKataBahasaIndonesiaBerdasarID(int id)
+    public string CariKataBahasaIndonesiaBerdasarKataBahasaDaerah(string kataBahasaDaerah)
     {
-        WordData word = _wordList.FirstOrDefault(w => w.id == id);
+        WordData word = _wordList.FirstOrDefault(w => w.bahasaDaerah == kataBahasaDaerah);
         return word != null ? word.indonesia : string.Empty;
     }
 
@@ -134,6 +135,7 @@ public class AssetManager : MonoBehaviour
                 isAudioIndonesiaAssetReady = fields[6].ToLower() == "true"
             };
             _wordList.Add(word);
+            listKata.Add(word.bahasaDaerah); // Add to listKata
         }
     }
 
@@ -173,6 +175,14 @@ public class AssetManager : MonoBehaviour
         }
 
         return clip;
+    }
+
+    public Sprite button(string warna)
+    {
+        string path = "project://database/Assets/Sprite/Sprite/Icons_dan_UI/ButtonForm" + warna + ".png";
+
+        return Resources.Load<Sprite>(path);
+
     }
 
 }

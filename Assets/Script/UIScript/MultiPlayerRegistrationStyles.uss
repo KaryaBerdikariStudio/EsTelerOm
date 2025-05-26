@@ -1,0 +1,53 @@
+.mainContainer {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.formsContainer {
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    align-items: center;
+    flex-direction: row; /* Add vertical layout */
+    gap: 20px; /* Space between forms */
+    padding: 20px;
+    -unity-overflow: vertical;
+}
+
+.form-item { /* Add this new class for form items */
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.footerContainer {
+    height: 150px;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/FooterContainer.png");
+}
+
+.addButton {
+    width: 256px;
+    height: 64px;
+    font-size : 20px;
+    background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/ButtonFormPutih.png");
+}
+
+.doneButton {
+    width: 256px;
+    height: 64px;
+    font-size : 20px;
+    background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/ButtonFormPutih.png");
+}
+
+.buttonContainer{
+    flex-direction: row; 
+    height: 130px; width: 569px;
+    align-items: center;
+}
+
+

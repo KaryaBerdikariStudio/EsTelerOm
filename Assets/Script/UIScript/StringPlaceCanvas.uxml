@@ -1,0 +1,7 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Script/UIScript/StringPlaceCanvasStyles.uss?fileID=7433441132597879392&amp;guid=a51805ab357eabd45bf0799cf35b5c89&amp;type=3#StringPlaceCanvasStyles" />
+    <engine:VisualElement name="stringPlaceRoot" class="stringSlot" style="align-self: center;">
+        <engine:Label text="A" name="stringSlotValue" class="stringContent" style="font-size: 45px; top: -9px;" />
+        <engine:Label text="_" name="stringUnderScoreSlotValue" class="stringContent" style="font-size: 24px; -unity-text-align: middle-center; height: 23px; width: 53px; top: -8px;" />
+    </engine:VisualElement>
+</engine:UXML>

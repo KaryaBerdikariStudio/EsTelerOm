@@ -1,0 +1,22 @@
+﻿.stringSlot{
+	flex-direction : column;
+	width: 5.2%;
+	height: 9.3%;
+	margin: 0.26%;
+	justify-content: center;
+	align-items: center;
+	background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/SlotKata.png");
+}
+
+.stringContent{
+	color: white;
+	height: 30px;
+	-unity-text-align: middle-center;
+	-unity-font-style: bold;
+	-unity-font-size: 20px;
+	-unity-text-align: center;
+	-unity-text-clip: overflow;
+	-unity-text-wrap: no-wrap;
+	justify-content: center;
+	align-items: center;
+}

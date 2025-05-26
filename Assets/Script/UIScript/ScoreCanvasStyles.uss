@@ -1,0 +1,35 @@
+.ScoreCanvas{
+	justify-content: flex-start; 
+	align-items: center; 
+	-unity-text-align: middle-center; 
+	white-space: normal; 
+	flex-direction: row; 
+	color: white;
+	width: 40%;
+	font-size: 210%;
+}
+
+.labelSkor{
+	width: 20%;
+	height: 100%;
+	border : 5px;
+}
+
+.labelSkorValue{
+	height: 100%;
+	border : 5px;
+}
+
+.nama{
+	width: 20%;
+	-unity-text-align: middle-left;
+}
+
+.skor{
+	width: 10%;
+	-unity-text-align: middle-right;
+}
+.kombo{
+	width: 5%;
+	-unity-text-align: middle-center;
+}

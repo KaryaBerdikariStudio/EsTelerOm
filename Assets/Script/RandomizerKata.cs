@@ -1,17 +1,23 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
+using System.Text;
+using UnityEngine.UIElements;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Networking;
+using static NetworkManager;
 
 public class RandomizerKata : MonoBehaviour
 {
-    public GameObject stringPlace;
+
+    public VisualElement rootHangmanUI, rootStringPlace, stringPlaceParentHierarchy;
+    public List<VisualElement> stringPlaceList = new List<VisualElement>(); // 🔹 List untuk menyimpan referensi tempat string
+    public GameObject stringPlacePrefab; // 🔹 Prefab untuk tempat string
     public int jumlahKata, idKata, jumlahBenarYangDibutuhkan;
     public string namaLevel;
     public string kataBahasaDaerah;
+
+    List<string> listKata = new List<string>();
 
 
     public List<char> charsInitialValue = new List<char>
@@ -22,8 +28,7 @@ public class RandomizerKata : MonoBehaviour
                 'Y', 'Z'
             };
 
-    public GameObject charSlotPrefab; // 🔹 Prefab untuk setiap kotak huruf
-    public Dictionary<char, List<GameObject>> letterSlots = new Dictionary<char, List<GameObject>>();
+    public Dictionary<char, List<VisualElement>> letterSlots = new Dictionary<char, List<VisualElement>>();
 
     private void Awake()
     {
@@ -32,114 +37,123 @@ public class RandomizerKata : MonoBehaviour
             Debug.LogError("AssetManager instance itu NULL! Instansiasi dulu di Scene baru pakai");
             return;
         }
+    }
 
-        GameManager.instance.namaLevel = namaLevel;
-        
+    private void OnEnable()
+    {
+        rootHangmanUI = GetComponent<UIDocument>().rootVisualElement;
+        rootStringPlace = stringPlacePrefab.GetComponent<UIDocument>().rootVisualElement;
 
+        stringPlaceParentHierarchy = rootHangmanUI.Q<VisualElement>("stringPlaceContainer");
     }
 
     private void Start()
     {
         
+        listKata = AssetManager.instance.listKata;
+        listKata.RemoveAll(k => LevelManager.instance.kataYangTelahDipakai.Contains(k));
 
-        Debug.Log("Randomizer Aktif");
-        jumlahKata = AssetManager.instance.GetMaxIDValue();
+        jumlahKata = listKata.Count;
+
         idKata = UnityEngine.Random.Range(0, jumlahKata);
+        kataBahasaDaerah = listKata[idKata];
+        
+        LevelManager.instance.kataSekarang = kataBahasaDaerah;
 
-        kataBahasaDaerah = AssetManager.instance.CariKataBahasaDaerahBerdasarID(idKata).ToUpper();
-
-
-
-        BuatStringPlace(kataBahasaDaerah, stringPlace);
+        LevelManager.instance.charsRemaining = charsInitialValue;
+        Debug.Log("Randomizer Aktif"); // 🔹 Panggil fungsi Randomizer
+        StartCoroutine(Randomizer(kataBahasaDaerah.ToUpper())); // 🔹 Panggil fungsi Randomizer
+        StartCoroutine(BuatStringPlace(kataBahasaDaerah.ToUpper()));
     }
 
-    public void BuatStringPlace(string kata, GameObject stringPlace)
+
+    [Serializable]
+    public class KataPayload
     {
-        GameManager.instance.charsInitialValue = charsInitialValue;
+        public string kata;
+    }
 
-        if (stringPlace == null || charSlotPrefab == null)
-        {
-            Debug.LogError("StringPlace atau Prefab belum diassign di Inspector!");
-            return;
-        }
+    public IEnumerator Randomizer(string kata)
+    {
+        var payload = new KataPayload { kata = kata };
+        string json = JsonUtility.ToJson(payload);
+        Debug.Log($"→ Sending payload: {json}");
 
-        // 🔹 Hapus semua slot lama sebelum membuat yang baru
-        foreach (Transform child in stringPlace.transform)
+        using var req = new UnityWebRequest($"{NetworkManager.instance._api}/setKata", "POST")
         {
-            Destroy(child.gameObject);
-        }
+            uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(json)),
+            downloadHandler = new DownloadHandlerBuffer()
+        };
+        req.SetRequestHeader("Content-Type", "application/json");
+
+        yield return req.SendWebRequest();
+
+        if (req.result == UnityWebRequest.Result.Success)
+            Debug.Log($"✅ Kata berhasil diubah ke '{kata}'");
+        else
+            Debug.LogError($"❌ Gagal mengubah kata: {req.error}");
+    }
+
+
+
+    public IEnumerator BuatStringPlace(string kata)
+    {
+        LevelManager.instance.charsRemaining = charsInitialValue;
 
         int wordLength = kata.Length;
-        RectTransform parentRect = stringPlace.GetComponent<RectTransform>();
-        float parentWidth = parentRect.rect.width;
-
-        // 🔹 Hitung ukuran huruf dan spasi
-        float maxSlotWidth = parentWidth / wordLength * 0.8f;
-        float adjustedFontSize = Mathf.Clamp(maxSlotWidth * 0.5f, 30f, 100f);
-        float underscoreFontSize = adjustedFontSize * 0.8f;
-        //float underscoreOffset = 5f;
-
+        
         letterSlots.Clear();
 
         for (int i = 0; i < wordLength; i++)
         {
             char c = kata[i];
 
-            // 🔹 Buat CharSlot dari Prefab
-            GameObject charSlot = Instantiate(charSlotPrefab, stringPlace.transform);
-            charSlot.name = $"Slot_{c}";
+            GameObject newCharSlot= Instantiate(stringPlacePrefab, transform);
+            newCharSlot.name = $"Slot_{c}"; // Set index-based name
 
-            RectTransform slotRect = charSlot.GetComponent<RectTransform>();
-            slotRect.sizeDelta = new Vector2(maxSlotWidth, maxSlotWidth);
+            UIDocument charSlotUIDocument = newCharSlot.GetComponent<UIDocument>();
 
-            // 🔹 Ambil referensi komponen dalam Prefab
-            TextMeshProUGUI charText = charSlot.transform.Find("CharText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI underscoreText = charSlot.transform.Find("UnderScore").GetComponent<TextMeshProUGUI>();
+            // Add to layout
+            VisualElement charSlotRoot = charSlotUIDocument.rootVisualElement.Q<VisualElement>("stringPlaceRoot");
+            charSlotRoot.name = newCharSlot.name;
+            
+            // Sync VisualElement name with GameObject
+            stringPlaceParentHierarchy.Add(charSlotRoot);
 
-            if (charText != null)
-            {
-                charText.text = c.ToString().ToUpper();
-                charText.fontSize = adjustedFontSize;
-                charText.color = Color.black;
-                charText.alignment = TextAlignmentOptions.Center;
-            }
+            // 🔹 Penyesuaian tampilan untuk karakter khusus  
+            Label underscoreText = charSlotRoot.Q<Label>("stringUnderScoreSlotValue");
+            Label charText = charSlotRoot.Q<Label>("stringSlotValue");
 
-            if (underscoreText != null)
-            {
-                underscoreText.fontSize = underscoreFontSize;
-                underscoreText.color = Color.black;
-                underscoreText.alignment = TextAlignmentOptions.Center;
-            }
-
-            // 🔹 Penyesuaian tampilan untuk karakter khusus
             switch (c)
             {
                 case '\'':
                 case '-':
-                    if (underscoreText != null) underscoreText.text = ""; // Tidak ada garis bawah
-                    if (charText != null) charText.gameObject.SetActive(true); // Tampilkan huruf
+                    charText.text = c.ToString().ToUpper(); // Kosongkan huruf untuk karakter khusus
+                    if (underscoreText != null) underscoreText.text = ""; // Tidak ada garis bawah  
+                    if (charText != null) charText.style.display = DisplayStyle.Flex; // Tampilkan huruf  
                     break;
 
                 default:
-                    if (underscoreText != null) underscoreText.text = "_"; // Garis bawah untuk huruf biasa
-                    if (charText != null) charText.gameObject.SetActive(false); // Sembunyikan huruf
-                    GameManager.instance.jumlahBenarYangDibutuhkan++;
+                    if (underscoreText != null) underscoreText.text = "_"; // Garis bawah untuk huruf biasa  
+                    if (charText != null) charText.style.display = DisplayStyle.None; // Sembunyikan huruf  
+                    LevelManager.instance.jumlahBenarYangDibutuhkan++;
                     break;
             }
 
-            Debug.Log(GameManager.instance.jumlahBenarYangDibutuhkan);
+            Debug.Log(LevelManager.instance.jumlahBenarYangDibutuhkan);
 
-            // 🔹 Simpan referensi di dictionary untuk akses nanti
+            // 🔹 Simpan referensi di dictionary untuk akses nanti  
             if (!letterSlots.ContainsKey(c))
             {
-                letterSlots[c] = new List<GameObject>();
+                letterSlots[c] = new List<VisualElement>();
             }
-            letterSlots[c].Add(charText.gameObject);
-            
-            
+
+            letterSlots[c].Add(charText);
+             // Tunggu satu frame sebelum melanjutkan
         }
 
-        
+        LevelManager.instance.kataYangTelahDipakai.Add(kata);
+        yield return null;
     }
 
 }

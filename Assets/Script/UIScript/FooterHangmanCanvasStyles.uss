@@ -1,0 +1,57 @@
+/* Main container setup */
+.mainContainer {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+}
+
+.formsContainer {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Footer layout */
+.footerContainer {
+    width: 100%;
+    height: 100%; /* Adjust based on your needs */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/Keyboard.png");
+}
+
+/* Keyboard and hint containers */
+.keyboardContainer {
+    width: 70%;
+    height: 100%;
+    right: 2%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.hintButtonContainer {
+    width: 20%;
+    height: 100%;
+    left : 2%;
+}
+
+/* Existing button styling */
+.buttonContainer {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.hintButton {
+    min-width: 0; 
+    height: 100%;
+    color: white;
+    -unity-font-size: 14px;
+    -unity-text-align: middle-center;
+    background-color: none; /* Green */
+    background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/SlotKeyboard.png");
+    border-color: none;
+}

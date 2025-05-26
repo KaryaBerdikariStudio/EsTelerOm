@@ -1,0 +1,20 @@
+﻿.keySlot{
+	width: 5%;
+	height: 25%;
+	margin: 5px;
+	justify-content: center;
+	align-items: center;
+	background-image: url("project://database/Assets/Sprite/Sprite/Icons_dan_UI/SlotKeyboard.png");
+}
+
+.keyContent{
+	color: white;
+	-unity-text-align: middle-center;
+	-unity-font-style: bold;
+	-unity-font-size: 10%;
+	-unity-text-align: center;
+	-unity-text-clip: overflow;
+	-unity-text-wrap: no-wrap;
+	justify-content: center;
+	align-items: center;
+}

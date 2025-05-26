@@ -1,0 +1,10 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Script/UIScript/ScoreCanvasStyles.uss" />
+    
+    <engine:VisualElement name="ScoreCanvas" class="ScoreCanvas" style="flex-direction: row;">
+        <engine:Label name="labelNama" text="Nama  " class="labelSkor nama" />
+        <engine:Label name="labelSkor" text=":" class="labelSkor" />
+        <engine:Label name="labelSkorValue" text="0" class="labelSkorValue skor" />
+        <engine:Label name="labelKomboValue" text="(0)" class="labelSkorValue kombo" />
+    </engine:VisualElement>
+</engine:UXML>

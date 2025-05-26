@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    
+    <Style src="project://database/Assets/Script/UIScript/HangmanUIStyles.uss?fileID=7433441132597879392&amp;guid=ad0157ab50edc234f86dcbcbf68aea19&amp;type=3#HangmanUIStyles" />
+    <Style src="project://database/Assets/Script/UIScript/GameOverSceneCanvasStyles.uss" />
+    <Style src="project://database/Assets/Script/UIScript/FooterHangmanCanvasStyles.uss?fileID=7433441132597879392&amp;guid=e49fcdeb99ff8bd468d3b9a180675bf6&amp;type=3#FooterHangmanCanvasStyles" />
+    <Style src="project://database/Assets/Script/UIScript/ScoreCanvasStyles.uss" />
+    <Style src="project://database/Assets/Script/UIScript/KeyboardAvailableCanvasStyles.uss" />
+    <Style src="project://database/Assets/Script/UIScript/StringPlaceCanvasStyles.uss?fileID=7433441132597879392&amp;guid=a51805ab357eabd45bf0799cf35b5c89&amp;type=3#StringPlaceCanvasStyles" />
+    
+
+    <ui:VisualElement name="hangmanUIRoot" class="rootContainer">
+        <ui:VisualElement name="tempatSkor" class="tempatSkorContainer" />
+        <ui:VisualElement name="stringPlaceContainer" class="stringPlaceContainer" />
+        <ui:VisualElement name="hintKeyBoardContainer" class="hintKeyBoardContainer"/>
+        <ui:VisualElement name="gameOverPopUp" class="gameOverPopUp" />
+    </ui:VisualElement>
+</ui:UXML>

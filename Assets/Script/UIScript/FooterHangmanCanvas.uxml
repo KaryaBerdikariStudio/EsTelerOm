@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Script/UIScript/FooterHangmanCanvasStyles.uss?fileID=7433441132597879392&amp;guid=e49fcdeb99ff8bd468d3b9a180675bf6&amp;type=3#FooterHangmanCanvasStyles" />
+    <engine:VisualElement name="footerRoot" class="mainContainer">
+        <engine:VisualElement name="formsContainer" class="formsContainer" />
+        <engine:VisualElement class="footerContainer">
+            <engine:VisualElement class="hintButtonContainer" >
+                <engine:Button text="?" name="hintButton" class="hintButton" />
+            </engine:VisualElement>
+            <engine:VisualElement name="keyboardContainer" class="keyboardContainer" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
