@@ -21,7 +21,9 @@ public class GameManager : MonoBehaviour
     public Gamemode gamemode { get => _gamemode; set => _gamemode = value; }
 
     [SerializeField]
-    public List<PlayerDatabase.PlayerData> playerDatas = new List<PlayerDatabase.PlayerData>();
+    private List<PlayerDatabase.PlayerData> _players;
+    public List<PlayerDatabase.PlayerData> playerDatas { set => _players = value; get => _players; }
+
 
     private void Awake()
     {
@@ -31,7 +33,12 @@ public class GameManager : MonoBehaviour
             return;
         }
         instance = this;
+
+       if(_players == null)
+            _players = new List<PlayerDatabase.PlayerData>();
         DontDestroyOnLoad(gameObject);
+
+        Debug.Log($" → Keeping GameManager (ID {GetInstanceID()}) – players after init: {_players.Count}");
     }
 
 

@@ -1,77 +1,62 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager instance;
 
-    [Header("Hati Animators")]
-    public Animator hati_1;
-    public Animator hati_2;
-    public Animator hati_3;
-    public Animator resetHati;
-
-    [Header("Salah/Benar Animators")]
-    public Animator salah_1;
-    public Animator salah_2;
-    public Animator salah_3;
-    public Animator resetBenar;
+    [Header("Heart Animators (Hati 0–2)")]
+    // Assign your three heart Animator components in the Inspector
+    public Animator[] hatiAnimators = new Animator[3];
 
     private void Awake()
     {
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    /// <summary>
+    /// Triggers the 'isSalah' bool on heart index (0–2), plays the wrong‐answer crack,
+    /// then resets the bool so it only fires once.
+    /// </summary>
+    public void PlayHatiSalah(int index)
+    {
+        if (!ValidIndex(index)) return;
+        Animator anim = hatiAnimators[index];
+
+        // Set isSalah true to transition Idle→HatiRetak
+        anim.SetBool("isSalah", true);
+    }
+
+    /// <summary>
+    /// Triggers the 'isBenar' bool on heart index (0–2), plays the correct‐answer reset,
+    /// then resets the bool so it only fires once.
+    /// </summary>
+    public void PlayHatiBenar()
+    {
+        Animator[] anim = hatiAnimators;
+
+        foreach (Animator item in anim)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            // Set isBenar true to transition HatiRetak→HatiReset
+            item.SetBool("isBenar", true);
         }
     }
 
     /// <summary>
-    /// Plays the "hati" animation on the given index (1-3).
+    /// Helper to ensure 0 ≤ index < 3.
     /// </summary>
-    public void PlayHati(int index)
+    private bool ValidIndex(int i)
     {
-        ResetHati();
-        switch (index)
+        if (hatiAnimators == null || i < 0 || i >= hatiAnimators.Length)
         {
-            case 2: hati_1.SetTrigger("Play"); break;
-            case 1: hati_2.SetTrigger("Play"); break;
-            case 0: hati_3.SetTrigger("Play"); break;
-            default: Debug.LogWarning($"Invalid hati index: {index}"); break;
+            Debug.LogWarning($"[AnimationManager] Invalid heart index: {i}");
+            return false;
         }
-    }
-
-    /// <summary>
-    /// Plays the "salah" animation on the given index (1-3).
-    /// </summary>
-    public void PlaySalah(int index)
-    {
-        ResetBenar();
-        switch (index)
-        {
-            case 2: salah_1.SetTrigger("Play"); break;
-            case 1: salah_2.SetTrigger("Play"); break;
-            case 0: salah_3.SetTrigger("Play"); break;
-            default: Debug.LogWarning($"Invalid salah index: {index}"); break;
-        }
-    }
-
-    /// <summary>
-    /// Resets all hati animators to their default state.
-    /// </summary>
-    public void ResetHati()
-    {
-        resetHati.SetTrigger("Reset");
-    }
-
-    /// <summary>
-    /// Resets all salah/benar animators to their default state.
-    /// </summary>
-    public void ResetBenar()
-    {
-        resetBenar.SetTrigger("Reset");
+        return true;
     }
 }

@@ -135,7 +135,10 @@ public class RandomizerKata : MonoBehaviour
 
                 default:
                     if (underscoreText != null) underscoreText.text = "_"; // Garis bawah untuk huruf biasa  
-                    if (charText != null) charText.style.display = DisplayStyle.None; // Sembunyikan huruf  
+                    if (charText != null) {
+                        charText.text = c.ToString().ToUpper(); // Set huruf ke huruf besar
+                        charText.style.display = DisplayStyle.None; 
+                    }// Sembunyikan huruf  
                     LevelManager.instance.jumlahBenarYangDibutuhkan++;
                     break;
             }

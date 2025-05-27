@@ -126,6 +126,11 @@ public class MultiplayerRegistration : MonoBehaviour
             GameManager.instance.playerDatas.Count > 0
         );
 
+        foreach (var item in GameManager.instance.playerDatas)
+        {
+
+            Debug.Log($"{item.playerName} = here");
+        }
         // 2) Tell the server “I’m in Hangman mode”
         yield return StartCoroutine(
             NetworkManager.instance.UpdateDeviceStatus(

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1483520944370535675}
   - component: {fileID: 1878613028573598490}
+  - component: {fileID: 4911472082635191457}
   m_Layer: 0
   m_Name: gameOverPopUp
   m_TagString: Untagged
@@ -51,3 +52,21 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!114 &4911472082635191457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831201501065475028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eee951e9f6e2754f886d4c1d21b68e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  retryButton: {fileID: 0}
+  nextLevelButton: {fileID: 0}
+  submitButton: {fileID: 0}
+  menangKalah: {fileID: 0}
+  gameOverPanel: {fileID: 0}
+  players: []

@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Core game logic for Hangman: level progression, hearts, input handling, word management,
+/// and broadcasting player status changes. UI (scores, game over) is handled via VisualElements.
+/// </summary>
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance { get; private set; }
-    public GameOverScene gameOverScene;
-    public VisualElement rootHangman, rootGameOverParent;
-    public UIDocument hangmanUI;
 
-    [SerializeField] private string _menangAtauKalah;
+    [Header("UI Documents & Templates")]
+    public UIDocument hangmanUI;
+    public VisualTreeAsset gameOverContainerTemplate;
+
+    public VisualElement rootHangman;
+    public VisualElement gameOverPopUp;
+
+    [SerializeField]
+    private string _menangAtauKalah;
     public string menangAtauKalah { get => _menangAtauKalah; set => _menangAtauKalah = value; }
 
     [Header("Level Info")]
@@ -18,7 +27,7 @@ public class LevelManager : MonoBehaviour
     public int maxLevel = 10;
     private int _jumlahBenarYangDibutuhkan;
     public int jumlahBenarYangDibutuhkan { get => _jumlahBenarYangDibutuhkan; set => _jumlahBenarYangDibutuhkan = value; }
-    public event System.Action<int> OnHeartsChanged;
+    public event Action<int> OnHeartsChanged;
 
     [SerializeField]
     private int _hearts = 3;
@@ -32,9 +41,8 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private char _inputChar;
-    public event Action<char> OnInputCharChanged;
-
+    [SerializeField]
+    private char _inputChar;
     public char inputChar
     {
         get => _inputChar;
@@ -47,6 +55,7 @@ public class LevelManager : MonoBehaviour
             }
         }
     }
+    public event Action<char> OnInputCharChanged;
 
     public List<char> _charsInitialValue = new List<char>();
     public List<char> charsRemaining
@@ -58,33 +67,78 @@ public class LevelManager : MonoBehaviour
     public string kataSekarang;
     public List<string> kataYangTersedia = new List<string>();
     public List<string> kataYangTelahDipakai = new List<string>();
-    public List<PlayerDatabase.PlayerData> playersInformation = PlayerDatabase.Instance.Players;
+
+    private int _prevHearts;
 
     private void Awake()
     {
         levelIndex = 1;
         kataYangTelahDipakai.Clear();
 
-        if (instance != null && instance != this) Destroy(gameObject);
+        if (instance != null && instance != this)
+            Destroy(gameObject);
         instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
     {
+        // Grab and cache root UI elements
+        rootHangman = hangmanUI.rootVisualElement.Q<VisualElement>("hangmanUIRoot");
+        gameOverPopUp = rootHangman.Q<VisualElement>("gameOverPopUp");
+
+        // Inject the game-over content template
+        var gameOverContent = gameOverContainerTemplate.CloneTree();
+        gameOverPopUp.Clear();
+        gameOverPopUp.Add(gameOverContent);
+        gameOverPopUp.style.display = DisplayStyle.None;
+
+        // Subscribe to hearts change
+        OnHeartsChanged += HandleHeartsChanged;
+
+        // Initialize previous heart count
+        _prevHearts = _hearts;
     }
 
-    void Start()
+    private void OnDisable()
     {
-        InitializePlayerScores();
-
-        if (gameOverScene != null)
-            gameOverScene.ShowGameOverPanel(false);
+        OnHeartsChanged -= HandleHeartsChanged;
     }
 
-    void InitializePlayerScores()
+    private void HandleHeartsChanged(int currentHearts)
     {
-        
+        switch (currentHearts)
+        {
+            case 0:
+                AnimationManager.instance.PlayHatiSalah(2);
+                ShowGameOverPanel(true);
+                break;
+            case 1:
+                AnimationManager.instance.PlayHatiSalah(1);
+                break;
+            case 2:
+                AnimationManager.instance.PlayHatiSalah(0);
+                break;
+            case 3:
+                AnimationManager.instance.PlayHatiBenar();
+                break;
+        }
+        _prevHearts = currentHearts;
     }
 
+    public void ShowGameOverPanel(bool show)
+    {
+        gameOverPopUp.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    public void NextLevel()
+    {
+        if (levelIndex < maxLevel)
+            levelIndex++;
+    }
+
+    public bool IsGameOver()
+    {
+        return heartsRemaining <= 0 || levelIndex > maxLevel;
+    }
 }

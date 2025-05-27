@@ -422,7 +422,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6319202968925235273, guid: 1bcbe51c517bf904fa9fde31768a891f, type: 3}
+  m_Sprite: {fileID: 1705859702252272437, guid: 1aaeb677d3b3ce04ebc84258ec594dbc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -566,7 +566,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6319202968925235273, guid: 1bcbe51c517bf904fa9fde31768a891f, type: 3}
+  m_Sprite: {fileID: 1705859702252272437, guid: 1aaeb677d3b3ce04ebc84258ec594dbc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -712,7 +712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gamemode: 0
-  playerDatas: []
+  _players: []
 --- !u!4 &456544194
 Transform:
   m_ObjectHideFlags: 0
@@ -1070,7 +1070,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -6319202968925235273, guid: 1bcbe51c517bf904fa9fde31768a891f, type: 3}
+  m_Sprite: {fileID: 1705859702252272437, guid: 1aaeb677d3b3ce04ebc84258ec594dbc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1210,7 +1210,8 @@ Transform:
   m_LocalPosition: {x: -3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1587573675}
   m_Father: {fileID: 1591693439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!111 &797035793
@@ -1411,14 +1412,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4413a35a486fa3d489dfaf6484cd588b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hati_1: {fileID: 0}
-  hati_2: {fileID: 0}
-  hati_3: {fileID: 0}
-  resetHati: {fileID: 0}
-  salah_1: {fileID: 0}
-  salah_2: {fileID: 0}
-  salah_3: {fileID: 0}
-  resetBenar: {fileID: 0}
+  hatiAnimators:
+  - {fileID: 415189157}
+  - {fileID: 328763748}
+  - {fileID: 612688375}
 --- !u!114 &1495471278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,8 +1428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a0f435afc9db7a48a0952ead50c4c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverScene: {fileID: 0}
   hangmanUI: {fileID: 863404867}
+  gameOverContainerTemplate: {fileID: 9197481963319205126, guid: 0393f0d1ee4f0bf42ada6adacd820c13, type: 3}
   _menangAtauKalah: 
   levelIndex: 0
   maxLevel: 10
@@ -1442,7 +1439,6 @@ MonoBehaviour:
   kataSekarang: 
   kataYangTersedia: []
   kataYangTelahDipakai: []
-  playersInformation: []
 --- !u!4 &1495471280
 Transform:
   m_ObjectHideFlags: 0
@@ -1690,12 +1686,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587573672}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0394, y: 2.3544, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.0394, y: 2.3544, z: 0}
   m_LocalScale: {x: 8.895486, y: 4.961394, z: 0.5877204}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 797035792}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1591693438
 GameObject:
@@ -1767,7 +1763,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 413625209}
   - {fileID: 1591693439}
-  - {fileID: 1587573675}
   - {fileID: 415189159}
   - {fileID: 328763750}
   - {fileID: 612688377}

@@ -1,4 +1,4 @@
-// ScoreSpawner.cs
+ï»¿// ScoreSpawner.cs
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,17 +65,21 @@ public class ScoreSpawner : MonoBehaviour
 
     public void SpawnScores(List<PlayerDatabase.PlayerData> players)
     {
+        // Clear out any previous UI
         tempatSkorContainer.Clear();
         spawnedBehaviours.Clear();
         lookupByName.Clear();
 
+        Debug.Log($"[ScoreSpawner] About to spawn {players.Count} players into '{tempatSkorContainer.name}'.");
+        Debug.Log($"[ScoreSpawner] Initial child count: {tempatSkorContainer.childCount}");
+
         for (int i = 0; i < players.Count; i++)
         {
             var data = players[i];
-            Debug.Log($"[ScoreSpawner] Spawning for {data.playerName}");
+            Debug.Log($"[ScoreSpawner] Spawning slot for {data.playerName} (index {i})");
 
-            // Parent under skorPrefabParent so you can see them in the hierarchy
-            GameObject go = Instantiate(skorPrefab, skorPrefabParent.transform);
+            // Instantiate under this spawner directly
+            GameObject go = Instantiate(skorPrefab, transform);
             go.name = $"SkorPlayer_{data.playerName}";
 
             var behaviour = go.GetComponent<SkorKomboBehaviour>();
@@ -86,20 +90,24 @@ public class ScoreSpawner : MonoBehaviour
                 continue;
             }
 
-            // Initialize with 0 score, 1× combo
             behaviour.Initialize(data.playerName, 0, 1f);
             spawnedBehaviours.Add(behaviour);
             lookupByName[data.playerName] = behaviour;
 
-            // Hook into the UI container
+            // Grab the UI root immediately
             var uiDoc = go.GetComponent<UIDocument>();
             var rootVE = uiDoc.rootVisualElement;
             rootVE.name = go.name;
-            tempatSkorContainer.Add(rootVE);
-        }
 
-        tempatSkorContainer.MarkDirtyRepaint();
+            // Defer the Add until UXML has been cloned
+            rootVE.schedule.Execute(_ =>
+            {
+                tempatSkorContainer.Add(rootVE);
+                Debug.Log($"[ScoreSpawner] Added '{rootVE.name}'. New childCount = {tempatSkorContainer.childCount}");
+            });
+        }
     }
+
 
     private void OnPlayerStatusChanged(PlayerDatabase.PlayerData player, string status)
     {

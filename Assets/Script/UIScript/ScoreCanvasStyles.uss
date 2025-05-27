@@ -1,35 +1,56 @@
-.ScoreCanvas{
-	justify-content: flex-start; 
-	align-items: center; 
-	-unity-text-align: middle-center; 
-	white-space: normal; 
-	flex-direction: row; 
-	color: white;
-	width: 40%;
-	font-size: 210%;
+.ScoreCanvas {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    width: 40%;
+    font-size: 100%;
+    white-space: normal;
 }
 
-.labelSkor{
-	width: 20%;
-	height: 100%;
-	border : 5px;
+/* Player name takes up twice as much as the numeric region */
+.nama {
+    /* grow 2, shrink 1, basis 0 */
+    flex-grow: 2;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    -unity-text-align: middle-left;
 }
 
-.labelSkorValue{
-	height: 100%;
-	border : 5px;
+/* Wrap the “:”, score and combo together */
+.labelSkorContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    /* grow 3, shrink 1, basis 0 */
+    flex-grow: 3;
+    flex-shrink: 1;
+    flex-basis: 0%;
 }
 
-.nama{
-	width: 20%;
-	-unity-text-align: middle-left;
+/* The colon is fixed size (no grow) */
+.labelSkor {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto; /* or whatever min size you need */
+    -unity-text-align: middle-center;
 }
 
-.skor{
-	width: 10%;
-	-unity-text-align: middle-right;
+/* Score value: grow 1 */
+.skor {
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    -unity-text-align: middle-right;
 }
-.kombo{
-	width: 5%;
-	-unity-text-align: middle-center;
+
+/* Combo value: grow 2 */
+.kombo {
+    flex-grow: 2;
+    flex-shrink: 1;
+    flex-basis: 0%;
+    -unity-text-align: middle-center;
 }
