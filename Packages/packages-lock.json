@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.endel.nativewebsocket": {
+      "version": "https://github.com/endel/NativeWebSocket.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1d8b49b3fee41c09a98141f1f1a5e4db47e14229"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.4",
       "depth": 1,
@@ -337,10 +344,11 @@
       "url": "https://packages.unity.com"
     },
     "studio.beardy.grid-layout-group": {
-      "version": "file:C:/Users/muham/Downloads/BeardyGridLayout-main/BeardyGridLayout-main",
+      "version": "https://github.com/mrbeardy/BeardyGridLayout.git",
       "depth": 0,
-      "source": "local",
-      "dependencies": {}
+      "source": "git",
+      "dependencies": {},
+      "hash": "8b1d7f44366b24df55dae32c674cf70adc6d04b7"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",

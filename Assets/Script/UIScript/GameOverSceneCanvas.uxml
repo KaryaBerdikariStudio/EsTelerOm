@@ -1,0 +1,32 @@
+<engine:UXML 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:engine="UnityEngine.UIElements" 
+    xmlns:editor="UnityEditor.UIElements" 
+    editor-extension-mode="False">
+    
+    <Style src="project://database/Assets/Script/UIScript/GameOverSceneCanvasStyles.uss" />
+    
+    <engine:VisualElement class="gameOverContainer">
+        <!-- Header -->
+        <engine:Label text="PERMAINAN HABIS" class="gameOverTitle" />
+        
+        <!-- Scores Container -->
+        <engine:ScrollView class="scoresContainer">
+            <engine:VisualElement class="scoresHeader">
+                <engine:Label text="PEMAIN" class="scoreHeaderLabel" />
+                <engine:Label text="SKOR" class="scoreHeaderLabel" />
+            </engine:VisualElement>
+            
+            <!-- Dynamic score entries will be added here -->
+            <engine:VisualElement class="scoreEntries" />
+        </engine:ScrollView>
+
+        <!-- Action Buttons -->
+        <engine:VisualElement class="buttonGroup">
+            <engine:Button text="Ulangi" class="actionButton retryButton" />
+            <engine:Button text="Lanjutkan" class="actionButton continueButton" />
+            <engine:Button text="Submit Skor" class="actionButton submitButton" />
+            <engine:Button text="Main Menu" class="actionButton menuButton" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

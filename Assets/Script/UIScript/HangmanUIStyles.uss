@@ -1,0 +1,50 @@
+﻿.rootContainer {
+    /* fill the screen, and stack children top→bottom */
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top bar: score panel */
+.tempatSkorContainer {
+    /* don't stretch vertically, but keep its natural height */
+    flex: 0 0 auto;       
+    padding: 2%;          /* margin from edges */
+    width: 25%;           /* take 25% of width */
+    align-self: flex-start; 
+}
+
+/* Middle: the word slots */
+.stringPlaceContainer {
+    /* stretch to fill remaining space */
+    flex: 1 1 auto;
+    display: flex;
+    top:15%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0 5%;        /* horizontal padding */
+}
+
+/* Bottom: keyboard / hint */
+.hintKeyBoardContainer {
+    /* fixed portion of the height (e.g. 20% of parent) */
+    flex: 0 0 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Game over popup: center overlay */
+.gameOverPopUp {
+    /* cover most of screen but center yourself */
+    position: absolute;
+    top: 10%; left: 10%; right: 10%; bottom: 10%;
+    display: none;
+    background-color: rgba(217,217,217,0.95);
+    justify-content: center;
+    align-items: center;
+}
+
+

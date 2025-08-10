@@ -2,103 +2,102 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class CekKebenaranHuruf : MonoBehaviour
 {
     public RandomizerKata randomizerKata;
     public string namaLevel;
-    public TMP_InputField inputField;
     public char inputChar;
-    public Button button;
+    public KeyboardAvailable keyboardAvailable;
+    public GameOverScene gameOverScene;
 
     public int maxNyawa = 3;
     private int jumlahNyawa;
 
     private void Start()
     {
-        inputField.characterLimit = 1;
 
-        namaLevel = GameManager.instance.namaLevel;
-        jumlahNyawa = GameManager.instance.heartsRemaining;
-
-        button.onClick.AddListener(OnSubmit);
+        jumlahNyawa = LevelManager.instance.heartsRemaining;
 
         // 📌 Listen to inputChar updates from GameManager
-        GameManager.instance.OnInputCharChanged += HandleNewInputChar;
+        LevelManager.instance.OnInputCharChanged += HandleNewInputChar;
     }
 
     private void OnDestroy()
     {
         // 📌 Unsubscribe when destroyed to prevent memory leaks
-        if (GameManager.instance != null)
-            GameManager.instance.OnInputCharChanged -= HandleNewInputChar;
+        if (LevelManager.instance != null)
+            LevelManager.instance.OnInputCharChanged -= HandleNewInputChar;
     }
 
     // 📌 Triggered when inputChar updates in GameManager
     private void HandleNewInputChar(char newChar)
     {
         inputChar = newChar;
-        StartCoroutine(CekHuruf(inputChar));
-        inputField.text = ""; // Clear input field
-        UIManager.instance.keyboardScript.HapusKeyboard(inputChar);
+        StartCoroutine(CekHuruf());
+        keyboardAvailable.HapusKeyboard(inputChar);
         Debug.Log($"📌 Auto-Checking New Input: {inputChar}");
     }
 
-    private void OnSubmit()
-    {
-        if (!string.IsNullOrEmpty(inputField.text))
-        {
-            inputChar = char.ToUpper(inputField.text[0]); // Convert to uppercase
-            GameManager.instance.inputChar = inputChar; // ✅ This triggers HandleNewInputChar()
-            inputField.text = ""; // Clear input field
-        }
-    }
 
-    public IEnumerator CekHuruf(char inputLetter)
+    public IEnumerator CekHuruf()
     {
-        List<char> removedChar = new List<char> { inputLetter };
+        char inputLetter = LevelManager.instance.inputChar;
+
+
+        char removedChar = inputChar;
 
         while (randomizerKata.letterSlots == null || randomizerKata.letterSlots.Count == 0)
             yield return null;
 
-        if (GameManager.instance.charsRemaining.Contains(inputLetter))
+        if (LevelManager.instance.charsRemaining.Contains(inputLetter))
         {
             if (randomizerKata.letterSlots.ContainsKey(inputLetter))
             {
                 Debug.Log($"Letter '{inputLetter}' is correct!");
 
-                foreach (GameObject charText in randomizerKata.letterSlots[inputLetter])
+                foreach (VisualElement charText in randomizerKata.letterSlots[inputLetter])
                 {
-                    charText.SetActive(true);
-                    GameManager.instance.jumlahBenarYangDibutuhkan--;
-                    GameManager.instance.heartsRemaining = maxNyawa;
-                    jumlahNyawa = GameManager.instance.heartsRemaining;
+                    charText.style.display = DisplayStyle.Flex; // Show the character
+                    LevelManager.instance.jumlahBenarYangDibutuhkan--;
+                    LevelManager.instance.heartsRemaining = maxNyawa;
+                    jumlahNyawa = LevelManager.instance.heartsRemaining;
+                    
                 }
             }
             else
             {
                 jumlahNyawa--;
-                GameManager.instance.heartsRemaining = jumlahNyawa;
+                LevelManager.instance.heartsRemaining = jumlahNyawa;
                 Debug.Log($"Letter '{inputLetter}' is incorrect!");
+                
             }
 
-            if (GameManager.instance.jumlahBenarYangDibutuhkan <= 0)
+            if (LevelManager.instance.jumlahBenarYangDibutuhkan <= 0)
             {
-                inputField.enabled = false;
-                button.enabled = false;
-                GameManager.instance.menangAtauKalah = "Game Menang Horeee";
-                UIManager.instance.popUpGameOver.SetActive(true);
+                
+                if (LevelManager.instance.levelIndex >= LevelManager.instance.maxLevel)
+                {
+                    LevelManager.instance.menangAtauKalah = "Game Menang Horeee";
+                    gameOverScene.ShowGameOverPanel(true);
+                }
+                else
+                {
+                    LevelManager.instance.menangAtauKalah = "Lanjut ke Level Selanjutnya";
+                    gameOverScene.ShowGameOverPanel(true);
+                }
+
             }
             else if (namaLevel == "Hangman" && jumlahNyawa == 0)
             {
-                inputField.enabled = false;
-                button.enabled = false;
-                GameManager.instance.menangAtauKalah = "Game Kalah Huuu";
-                UIManager.instance.popUpGameOver.SetActive(true);
+
+                LevelManager.instance.levelIndex = 1;
+                LevelManager.instance.menangAtauKalah = "Game Kalah Huuu";
+                gameOverScene.ShowGameOverPanel(true);
             }
 
-            GameManager.instance.charsRemaining = removedChar;
+            LevelManager.instance.charsRemaining.Remove(removedChar);
         }
         else
         {

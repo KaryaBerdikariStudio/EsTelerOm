@@ -1,30 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class GameOverScene : MonoBehaviour
 {
     public Button retryButton;
-    public TextMeshProUGUI menangKalah;
+    public Button nextLevelButton;
+    public Button submitButton;
+    public Label menangKalah;
+    public GameObject gameOverPanel;
+    public UIDocument gameOverDoc;
+    public VisualElement rootHangmanUI, rootGameOver, rootGameOverParent;
+    public List<PlayerDatabase.PlayerData> players;
 
+
+    private void OnEnable()
+    {
+        rootHangmanUI = LevelManager.instance.rootHangman;
+        rootGameOverParent = LevelManager.instance.gameOverPopUp;
+
+        rootGameOver = gameOverDoc.rootVisualElement;
+
+        Debug.Log()
+        rootGameOverParent.Add(rootGameOver);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
-        UIManager.instance.inputField.SetActive(false);
-        UIManager.instance.stringPlace.SetActive(false);
-        
+        players = PlayerDatabase.Instance.Players;
 
-        retryButton.onClick.AddListener(() => StartCoroutine(Retry()));
-        menangKalah.text = GameManager.instance.menangAtauKalah;
+        retryButton.clicked +=(() => StartCoroutine(Retry()));
+        nextLevelButton.clicked+=(() =>
+        {
+            LevelManager.instance.levelIndex++;
+            StartCoroutine(Retry());
+        });
+        menangKalah.text = LevelManager.instance.menangAtauKalah;
+
+       
     }
 
     private IEnumerator Retry()
     {
+        
         AsyncOperation retryLevel = SceneManager.LoadSceneAsync("LevelHangman");
 
         while (!retryLevel.isDone)
@@ -33,7 +56,15 @@ public class GameOverScene : MonoBehaviour
 
             yield return null;
         }
-        
+
         yield return retryLevel;
     }
+
+    public bool ShowGameOverPanel(bool show)
+    {
+        gameOverPanel.SetActive(show);
+        return gameOverPanel.activeSelf;
+    }
+
+
 }

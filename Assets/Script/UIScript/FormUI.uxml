@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Script/UIScript/FormUI.uss?fileID=7433441132597879392&amp;guid=4a6d946cd3c881f48a8ce060bbb57a80&amp;type=3#FormUI" />
+    <ui:VisualElement class="form-item">
+        <ui:VisualElement name="form" class="form">
+            <ui:VisualElement name="formBg" class="formBg" />
+            <ui:VisualElement name="namaLabel" class="namaLabel">
+                <ui:VisualElement name="label6" class="label6" />
+                <ui:Label name="player" text="Player" class="player" />
+            </ui:VisualElement>
+            <ui:Button name="buttonHapus" class="buttonHapus" />
+            <ui:VisualElement name="formCanvas">
+                <ui:VisualElement name="inputNama" class="inputNama">
+                    <ui:TextField name="inputField" placeholder="Masukkan nama" class="inputField" />
+                    <ui:VisualElement name="labelNama" class="labelIkon">
+                        <ui:VisualElement name="label2" class="label2" />
+                        <ui:Label name="labelNamaText" text="NAMA" class="nama2" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="pilihIkon" class="pilihIkon">
+                    <ui:VisualElement name="tempatIcon" class="tempatIcon">
+                        <ui:VisualElement name="tempatKotakanIkon1" class="tempatKotakanIkon1" />
+                        <ui:Button name="buttonPlayerIkonBebek" class="buttonPlayerIkonBebek" />
+                        <ui:Button name="buttonPlayerIkonKapal" class="buttonPlayerIkonKapal" />
+                        <ui:Button name="buttonPlayerIkonKucing" class="buttonPlayerIkonKucing" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="labelIkon" class="labelIkon2">
+                        <ui:VisualElement name="label4" class="label4" />
+                        <ui:Label name="labelIkonText" text="IKON" class="ikon8" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button name="buttonFormHubungkan" text="Hubungkan" class="buttonFormHubungkan" />
+                <ui:Button name="buttonFormSelesai" text="Selesai" class="buttonFormSelesai" />
+                <ui:Button name="buttonFormReset" text="Ulangi" class="reset" />
+                <ui:VisualElement name="warningCanvas" class="warningCanvas">
+                    <ui:Label name="warningText" text="Haloo" class="warningText" />
+                    <ui:Button name="warningClose" text="OK" class="warningButton" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
