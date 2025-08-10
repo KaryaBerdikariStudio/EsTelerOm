@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Backend Server</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background: #333;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Backend Server</h1>
+  <p>The server is running on <strong>localhost:8000</strong></p>
+
+  <h2>Input Log</h2>
+  <table id="input-log-table">
+    <thead>
+      <tr>
+        <th>Tabel</th>
+        <th>Event</th>
+        <th>Message</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function fetchInputLog() {
+      const resp = await fetch(`${window.location.origin}/input-log`);
+      if (!resp.ok) throw new Error('Network response was not ok');
+      const json = await resp.json();
+      // your endpoint returns { input_log: [...] }
+      return json.input_log || [];
+    }
+
+    async function refreshTables() {
+      try {
+        const rows = await fetchInputLog();
+        const tbody = document.querySelector('#input-log-table tbody');
+        tbody.innerHTML = '';
+        rows.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${r.tbl}</td>
+            <td>${r.event}</td>
+            <td>${r.message}</td>
+            <td>${new Date(r.timestamp).toLocaleString()}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('Error fetching input log:', err);
+      }
+    }
+
+    // initial load + every 5s
+    refreshTables();
+    setInterval(refreshTables, 5000);
+  </script>
+</body>
+</html>

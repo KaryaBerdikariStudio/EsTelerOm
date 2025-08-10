@@ -9,8 +9,14 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
-    path: Assets/Scenes/LevelHangman.unity
-    guid: 82916abf521e95543afbf4d46f0615f2
+    path: Assets/Scenes/MenuCampalagiang.unity
+    guid: 81595723bfaba684088c0cbede4cb416
+  - enabled: 1
+    path: Assets/Scenes/LevelHangmanCampalagiang.unity
+    guid: 5aff37d84dfa06048bde9c2b5474f95e
+  - enabled: 1
+    path: Assets/Scenes/KamusCampalagiang.unity
+    guid: 88a7e5b5ddcb2f1468772de503dff0dd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

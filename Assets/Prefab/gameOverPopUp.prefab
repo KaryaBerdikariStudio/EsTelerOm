@@ -64,9 +64,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eee951e9f6e2754f886d4c1d21b68e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  retryButton: {fileID: 0}
-  nextLevelButton: {fileID: 0}
-  submitButton: {fileID: 0}
-  menangKalah: {fileID: 0}
-  gameOverPanel: {fileID: 0}
+  gameOverDoc: {fileID: 1878613028573598490}
   players: []
